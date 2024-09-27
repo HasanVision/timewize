@@ -29,7 +29,8 @@
 ### 1. Frontend
 - **HTML/CSS** for structure and styling.
 - **JavaScript** for interaction and form validation.
-- Optionally, **React** or any frontend framework for dynamic interfaces.
+- **Angular** for frontend
+
 
 ### 2. Backend
 - **PHP** to handle server-side logic and manage data flow between the frontend and database.
