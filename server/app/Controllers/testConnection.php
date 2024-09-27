@@ -1,18 +1,30 @@
 <?php
+
 namespace App\Controllers;
+
 use CodeIgniter\Controller;
 
-class testConnection extends Controller
+class TestConnection extends Controller
 {
     public function index()
     {
-        // connect to the database
-        $db = \Config\Database::connect();
-        // run a test query
-        $query = $db->query('SELECT DATABASE()');   
-        $result = $query->getRow();
+        try {
+            // Connect to the database
+            $db = \Config\Database::connect();
+            
+            // Run a test query
+            $query = $db->query('SELECT DATABASE()');   
+            $result = $query->getRow();
 
-        echo 'Connected to the database: ' . $result->DATABASE();
+            // Check if the database connection was successful
+            if ($result) {
+                echo 'Connected to the database: ' . $result->{'DATABASE()'};
+            } else {
+                echo 'Failed to connect to the database.';
+            }
+        } catch (\Exception $e) {
+            echo 'Error connecting to the database: ' . $e->getMessage();
+        }
     }
 }
 ?>

@@ -8,4 +8,4 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 // Custom route to test the database connection
-$routes->get('home/testConnection', 'Home::testConnection');
+$routes->get('test_connection', 'TestConnection::index');
