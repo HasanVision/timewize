@@ -5,32 +5,25 @@ namespace App\Filters;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
-use Config\Cors as CorsConfig;
 
-class CORS implements FilterInterface
+class Cors implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        $config = new CorsConfig();
+        // Add CORS headers to the response
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-        // Set CORS headers based on the configuration
-        header('Access-Control-Allow-Origin: ' . implode(',', $config->default['allowedOrigins']));
-        header('Access-Control-Allow-Methods: ' . implode(',', $config->default['allowedMethods']));
-        header('Access-Control-Allow-Headers: ' . implode(',', $config->default['allowedHeaders']));
-        header('Access-Control-Max-Age: ' . $config->default['maxAge']);
-
-        if ($config->default['supportsCredentials']) {
-            header('Access-Control-Allow-Credentials: true');
-        }
-
-        // Handle preflight (OPTIONS) requests
+        // If the request method is OPTIONS, return an empty response
         if ($request->getMethod() === 'options') {
-            exit();
+            header('HTTP/1.1 200 OK');
+            exit;
         }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        // Additional processing after the request, if needed
+        // Do nothing after the request
     }
 }
