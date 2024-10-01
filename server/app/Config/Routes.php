@@ -11,4 +11,4 @@ $routes->get('/', 'Home::index');
 $routes->setAutoRoute(false);
 $routes->get('test_connection', 'TestConnection::index');
 $routes->post('register', 'Register::index');
-$routes->post('login', 'AuthController::login');
+$routes->post('login', 'Login::index');

@@ -26,8 +26,8 @@ export class RegisterComponent {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
       }).subscribe({
         next: (response) => {
-          console.log('Registration successful:', response);
-          alert('Registration successful!');
+          // console.log('Registration successful:', response);
+          // alert('Registration successful!');
           this.registerForm.reset();
         },
         error: (error) => {

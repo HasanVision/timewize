@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone: true, // Make this component standalone
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule]
 })
 export class LoginComponent {
@@ -16,20 +16,29 @@ export class LoginComponent {
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
   onSubmit() {
-    const loginData = this.loginForm.value;
+    if (this.loginForm.valid) {
+      const loginData = this.loginForm.value;
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post('http://localhost:8080/login', loginData).subscribe(
-      response => {
-        console.log('Login successful:', response);
-      },
-      error => {
-        console.error('Error logging in:', error);
-      }
-    );
+      this.http.post('http://localhost:8080/login', JSON.stringify(loginData), { headers, responseType: 'text' }).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          alert('Login successful!');
+          this.loginForm.reset();
+        },
+        error: (error) => {
+          console.error('Error during login:', error);
+          alert('Login failed. Please try again.');
+        },
+        complete: () => {
+          console.log('Login request completed.');
+        }
+      });
+    }
   }
 }
