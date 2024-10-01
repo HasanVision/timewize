@@ -12,13 +12,13 @@ class Register extends ResourceController
      */
     public function index()
     {
-        echo "register method is called";
         $userModel = new UserModel();
+        $input = $this->request->getJSON(true);
 
         // Retrieve input data
-        $username = $this->request->getVar('username');
-        $email = $this->request->getVar('email');
-        $password = $this->request->getVar('password');
+        $username = $input['username'] ?? '';
+        $email = $input['email'] ?? '';
+        $password = $input['password'] ?? '';
 
         log_message('debug', 'Register input - Username: ' . $username . ', Email: ' . $email);
 
@@ -40,20 +40,27 @@ class Register extends ResourceController
             'username' => $username,
             'email' => $email,
             'password' => $hashedPassword,
-            'role' => 'employee', 
+            'role' => 'employee',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         if ($userModel->insert($userData)) {
-            return $this->respondCreated([
-                'status' => 'success',
-                'message' => 'User registered successfully.',
-            ]);
+            return $this->response
+                ->setStatusCode(200)
+                ->setContentType('application/json')
+                ->setJSON([
+                    'status' => 'success',
+                    'message' => 'User registered successfully.',
+                ]);
         } else {
-            return $this->fail('Unable to register user. Please try again.', 500);
+            return $this->response
+                ->setStatusCode(400)
+                ->setContentType('application/json')
+                ->setJSON([
+                    'status' => 'error',
+                    'message' => 'Invalid request data.',
+                ]);
         }
     }
 }
-
-?>

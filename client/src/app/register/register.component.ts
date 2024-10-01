@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -20,18 +19,12 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
-
   onSubmit() {
     if (this.registerForm.valid) {
       const registerData = this.registerForm.value;
-      const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
-  
-      const body = new URLSearchParams();
-      body.set('username', registerData.username);
-      body.set('email', registerData.email);
-      body.set('password', registerData.password);
-  
-      this.http.post('http://localhost:8080/register', body.toString(), { headers }).subscribe({
+      this.http.post('http://localhost:8080/register', registerData, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }), 
+      }).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
           alert('Registration successful!');
@@ -39,10 +32,6 @@ export class RegisterComponent {
         },
         error: (error) => {
           console.error('Error during registration:', error);
-          alert('Registration failed. Please try again.');
-        },
-        complete: () => {
-          console.log('Registration request completed.');
         }
       });
     }
