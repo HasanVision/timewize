@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -27,9 +29,10 @@ export class LoginComponent {
 
       this.http.post('http://localhost:8080/login', JSON.stringify(loginData), { headers, responseType: 'text' }).subscribe({
         next: (response) => {
-          console.log('Login successful:', response);
-          alert('Login successful!');
-          this.loginForm.reset();
+          // console.log('Login successful:', response);
+          // alert('Login successful!');
+          // this.loginForm.reset();
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           console.error('Error during login:', error);

@@ -16,9 +16,9 @@ class Register extends ResourceController
         $input = $this->request->getJSON(true);
 
         // Retrieve input data
-        $username = $input['username'] ?? '';
-        $email = $input['email'] ?? '';
-        $password = $input['password'] ?? '';
+        $username = $input['username'];
+        $email = $input['email'];
+        $password = $input['password'];
 
         log_message('debug', 'Register input - Username: ' . $username . ', Email: ' . $email);
 

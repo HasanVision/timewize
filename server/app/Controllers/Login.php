@@ -16,8 +16,8 @@ class Login extends ResourceController
         $input = $this->request->getJSON(true);
 
         // Retrieve input data
-        $email = $input['email'] ?? '';
-        $password = $input['password'] ?? '';
+        $email = $input['email'] ;
+        $password = $input['password'] ;
 
         // Validate the input
         if (!$email || !$password) {
